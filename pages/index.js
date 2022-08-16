@@ -3,10 +3,23 @@ import ItemsList from "../components/ItemsList";
 import AddForm from "../components/AddForm";
 import UsersService from "../Services/usersService";
 import ErrorModal from "../components/ErrorModal";
+import {useCookies} from "react-cookie";
 
 
 export default function Home(props) {
-  return (
+    const [cookies, setCookie, removeCookie] = useCookies();
+    // setCookie("test", "value", { path: '/' });
+    fetch("http://localhost:3000/api/test", {
+        headers: {
+            "credentials": 'include',
+            "changeOrigin": true,
+            "Context-Type": "text/plain",
+            "Authorization": "aladdin:opensesame"
+            // 'Set-Cookie': "test=value;Path=/; Secure=false; SameSite=None",
+            // "access-control-expose-headers": "Set-Cookie"
+        }
+    })
+    return (
       <div className='app'>
           <Filter/>
           <div className='flex justify-around'>
@@ -21,7 +34,7 @@ export default function Home(props) {
 const usersService = new UsersService();
 
 export async function getServerSideProps(ctx) {
-    const res = await fetch("http://localhost:3000/api").then(res => res.json());
+    const res = await usersService.getAllData();
     return {
         props: {res},
     }

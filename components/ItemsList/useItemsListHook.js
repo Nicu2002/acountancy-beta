@@ -17,11 +17,7 @@ const useItemsListHook = (data) => {
     useEffect(() => {
         if(users !== null) {
             setisLoading(true);
-            const fetching = async() => {
-                const res = await fetch(`/api/${filterName + ":" +  filter}`).then(res => res.json())
-                onDataLoaded(res, dispatch, setisLoading)
-            }
-            fetching();
+            usersService.getAllData(filter, filterName).then(res => onDataLoaded(res, dispatch, setisLoading));
         }
     }, [filter, filterName]);
 

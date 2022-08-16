@@ -1,22 +1,24 @@
 
+
 class UsersService {
-    _URL = "https://retoolapi.dev/geeOvB/data";
+    _URL = "http://localhost:3000/api";
 
 
     getResource = async (url)=> {
-        let res = await fetch(url)
+        let res = await fetch(url, {headers: {'Set-Cookie': "thisistest=testvalue; Path=/newpath"}})
             .catch(e => console.log(e));
         if (!res.ok) {
             throw new Error(`Could not fetch ${url}, status: ${res.status}`);
         }
 
-        return await res.json();
+        return res.json();
     }
 
     getAllData = async(filter, filterName) => {
-        let url = this._URL;
+        // let url = this._URL + "/init";
+        let url = "https://retoolapi.dev/geeOvB/data"
         if(!!filter && !!filterName) {
-            url = this._URL + `?${filterName}=${filter}`
+            url = this._URL + "/filter" + `?${filterName}=${filter}`
         }
         const res = await this.getResource(url);
         let filtredArray = res.map(this._parseData).filter(item => !!item.name === true);
@@ -50,7 +52,7 @@ class UsersService {
     }
 
     postData = async (newItem) => {
-        const res = await fetch(this._URL, {
+        const res = await fetch(this._URL + "/post", {
             method: 'POST',
             headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
             body: JSON.stringify(newItem)

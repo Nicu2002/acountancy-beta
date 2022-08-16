@@ -22,18 +22,19 @@ export const onAddItem = ({ name, job, city, email, phoneNumber}, dispatch) => {
         "Phone Number": phoneNumber
     };
 
-    fetch("http://localhost:3000/api/post", {
-        method: "POST",
-        body: JSON.stringify(result)
-    }).then((res) => {
-            if(res.status !== 200) {
-                console.log("Something want wrong !");
-                dispatch(setError("Post error"));
-            }
-            else {
-                dispatch(addUser(item));
-            }
-        })
+    // fetch("http://localhost:3000/api", {
+    //     method: "POST",
+    //     body: JSON.stringify(result)
+    // }).then((res) => {
+    //         if(res.status !== 200) {
+    //             console.log("Something want wrong !");
+    //             dispatch(setError("Post error"));
+    //         }
+    //         else {
+    //             dispatch(addUser(item));
+    //         }
+    //     })
+    userService.postData(result);
 }
 
 export const onValueChange = (e, dataState, dataSetState) => {
